@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.RecruitmentApplication.Entity.JobStatusTbl;
 import com.RecruitmentApplication.Entity.NewJobRequestTbl;
 
 public interface HiringManagerService {
@@ -18,4 +19,6 @@ public interface HiringManagerService {
 			int numberOfPositions,String experience);
 
 	NewJobRequestTbl getById(String jobId);
+	
+	 List<JobStatusTbl> getJobStatus();
 }

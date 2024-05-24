@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.RecruitmentApplication.Entity.JobStatusTbl;
 import com.RecruitmentApplication.Entity.NewJobRequestTbl;
 import com.RecruitmentApplication.Exception.RecruitmentException;
 import com.RecruitmentApplication.Service.HiringManagerService;
@@ -38,7 +39,8 @@ public class HiringManagerController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Please try after some times!");
 		}
 	}
-	/*update job request by hiring manager*/
+
+	/* update job request by hiring manager */
 	@PutMapping("/updateJobRequest")
 	public ResponseEntity<?> updateJobRequest(@RequestBody NewJobRequestTbl newJobRequest) {
 		try {
@@ -48,46 +50,47 @@ public class HiringManagerController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Please try after some times!");
 		}
 	}
-	//code added by Sowjanya for retreving all jobRequests
-    @GetMapping("/all")
-    public List<NewJobRequestTbl> getAllJobRequests() {
-        return hmService.getAllJobRequests();
-    }
-    
- // code by sowjanya for search/filter operation
-    @PostMapping("/job-requests/search-filter")
-    public ResponseEntity<List<NewJobRequestTbl>> searchAndFilter(@RequestBody NewJobRequestTbl newJobRequest) {
-        List<NewJobRequestTbl> result = hmService.searchAndFilter(
-        		newJobRequest.getJobId(),
-        		newJobRequest.getJobTitle(),
-        		newJobRequest.getDepartment(),
-        		newJobRequest.getStatus(),
-        		newJobRequest.getNumberOfPositions(),
-            newJobRequest.getExperience()
-        );
-        
-        if (result != null && !result.isEmpty()) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    
-    //code added by vinayak for getting one jobId 
-    @GetMapping("/job/{jobId}")
-    public ResponseEntity<?> getJobById(@PathVariable String jobId) {
-        NewJobRequestTbl job = hmService.getById(jobId);
-        if (job != null) {
-            return ResponseEntity.ok(job);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found");
-        }
-    }
 
-    
-    
-@ResponseStatus(HttpStatus.UNAUTHORIZED)
-public String GetAuthorizedException(RecruitmentException errorMsg) {
-	return errorMsg.getMessage();
-}
+	// code added by Sowjanya for retreving all jobRequests
+	@GetMapping("/all")
+	public List<NewJobRequestTbl> getAllJobRequests() {
+		return hmService.getAllJobRequests();
+	}
+
+	// code by sowjanya for search/filter operation
+	@PostMapping("/job-requests/search-filter")
+	public ResponseEntity<List<NewJobRequestTbl>> searchAndFilter(@RequestBody NewJobRequestTbl newJobRequest) {
+		List<NewJobRequestTbl> result = hmService.searchAndFilter(newJobRequest.getJobId(), newJobRequest.getJobTitle(),
+				newJobRequest.getDepartment(), newJobRequest.getStatus(), newJobRequest.getNumberOfPositions(),
+				newJobRequest.getExperience());
+
+		if (result != null && !result.isEmpty()) {
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	// code added by vinayak for getting one jobId
+	@GetMapping("/job/{jobId}")
+	public ResponseEntity<?> getJobById(@PathVariable String jobId) {
+		NewJobRequestTbl job = hmService.getById(jobId);
+		if (job != null) {
+			return ResponseEntity.ok(job);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found");
+		}
+	}
+
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public String GetAuthorizedException(RecruitmentException errorMsg) {
+		return errorMsg.getMessage();
+	}
+
+	@GetMapping("/jobStatus")
+	public List<JobStatusTbl> getJobStatus() {
+		return hmService.getJobStatus();
+
+	}
+
 }

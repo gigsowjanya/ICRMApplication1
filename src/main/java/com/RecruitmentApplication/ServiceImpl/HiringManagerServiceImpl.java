@@ -185,4 +185,12 @@ public class HiringManagerServiceImpl implements HiringManagerService {
 	public NewJobRequestTbl getById(String jobId) {
 		return jobRepository.findByJobId(jobId);
 	}
+	
+	@Override
+	public List<JobStatusTbl> getJobStatus() {
+		// TODO Auto-generated method stub
+
+		return jobStatusRepository.findAll();
+
+	}
 }
